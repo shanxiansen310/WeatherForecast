@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--这里是平板模式下展现天气列表和内容的activity的布局-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/weather_title_fragment"
+        android:name="com.example.weatherforecast.WeatherTitleFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <!--能找到这个FrameLayout的id则是双页平板布局-->
+    <FrameLayout
+        android:id="@+id/weather_content_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" >
+
+        <fragment
+            android:id="@+id/weather_content_fragment"
+            android:name="com.example.weatherforecast.WeatherContentFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--这里是新闻内容的布局,在手机中我们点击天气需要显示详细信息的话是需要
+打开一个新的activity的,这里就是那个新的activity,fragment则是复用的-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/weather_content_fragment"
+        android:name="com.example.weatherforecast.WeatherContentFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

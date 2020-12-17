@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--这里是手机模式下展现天气列表activity的布局-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weather_title_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
+    <!--传入天气列表的fragment-->
     <fragment
-        android:id="@+id/left_fragment"
-        android:name="com.example.weatherforecast.LeftFragment"
-        android:layout_width="0dp"
+        android:id="@+id/weather_title_fragment"
+        android:name="com.example.weatherforecast.WeatherTitleFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        />
 
-<!--    <fragment-->
-<!--        android:id="@+id/right_fragment"-->
-<!--        android:name="com.example.weatherforecast.RightFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1"/>-->
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/right_layout"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1">-->
-<!--    </FrameLayout>-->
-
-</LinearLayout>
+</FrameLayout>
