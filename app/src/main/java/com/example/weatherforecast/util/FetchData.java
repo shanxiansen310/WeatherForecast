@@ -62,11 +62,12 @@ public class FetchData {
 //        Log.d(TAG,"fetchItems!!!");
 
         List<Weather> items =new ArrayList<>();
+
         try {
             /*flickr默认返回XML格式的数据,要获取有效的json数据,需要同时指定format和nojsoncallback */
             String url = Uri.parse("https://devapi.qweather.com/v7/weather/15d?")
                     .buildUpon()
-                    .appendQueryParameter("api_key", API_KEY)    //--已在和风官网获取到key    暂未获取到API_KEY
+                    .appendQueryParameter("key", API_KEY)    //--已在和风官网获取到key    暂未获取到API_KEY
                     .appendQueryParameter("location","101250101")  //城市对应的weatherId
                     .build().toString();
 
@@ -82,6 +83,11 @@ public class FetchData {
 //            parseItemsGson(items,jsonString);
 
             parseGSON(items,jsonString);
+
+            Log.d(TAG,"Weather:"+items.get(1).getDate()+"\n"+
+                    items.get(1).getHumidity()+"\n"+items.get(1).getIconDay()+"\n"+
+                    items.get(1).getPressure()+"\n"+items.get(1).getTempMax()+"\n"+
+                    items.get(1).getTempMin()+"\n"+items.get(1).getWindSpeed());
 
         }catch (IOException ioe){
             Log.e(TAG,"Failed to fetch Items",ioe);

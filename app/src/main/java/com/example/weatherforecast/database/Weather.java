@@ -1,13 +1,17 @@
 package com.example.weatherforecast.database;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Weather {
+    @SerializedName("fxDate")
     private String date;
     private String tempMax;
     private String tempMin;
     private String humidity;
     private String pressure;
+    @SerializedName("windSpeedDay")
     private String windSpeed;
     private String iconDay;
 

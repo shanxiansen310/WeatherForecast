@@ -30,5 +30,6 @@ public class WeatherContentFragment extends Fragment {
         TextView newsContentText = (TextView) view.findViewById(R.id.news_content);
         newsTitleText.setText(newsTitle); // 刷新新闻的标题
         newsContentText.setText(newsContent); // 刷新新闻的内容
+
     }
 }

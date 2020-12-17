@@ -27,6 +27,7 @@ public class WeatherContentActivity extends AppCompatActivity {
         String newsContent = getIntent().getStringExtra("news_content"); // 获取传入的新闻内容
         WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
                 getSupportFragmentManager().findFragmentById(R.id.weather_content_fragment);
+        assert weatherContentFragment != null;
         weatherContentFragment.refresh(newsTitle, newsContent); // 刷新NewsContentFragment界面
     }
 
