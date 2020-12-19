@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    >
+
+    <ImageView
+        android:id="@+id/list_item_weather_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/snowy"
+        />
+
+    <TextView
+        android:id="@+id/list_item_weather_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/list_item_weather_image"
+        android:layout_toEndOf="@id/list_item_weather_image"
+        android:padding="4dp"
+        android:textSize="30sp"
+        android:text="2020-12-25"
+        android:textColor="@color/realBlack"
+        />
+
+    <TextView
+        android:id="@+id/list_item_weather_situation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/list_item_weather_image"
+        android:layout_toEndOf="@id/list_item_weather_image"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:padding="4dp"
+        android:textSize="20sp"
+        android:text="cloudy"
+        />
+
+    <TextView
+        android:id="@+id/list_item_weather_tempMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:padding="4dp"
+        android:textSize="30sp"
+        android:layout_marginRight="20dp"
+        android:text="25 °C"
+        android:textColor="@color/blue"
+         />
+
+    <TextView
+        android:id="@+id/list_item_weather_tempMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:padding="4dp"
+        android:textSize="20sp"
+        android:layout_marginRight="20dp"
+        android:text="14 °C"
+        android:textColor="@color/skyBlue"
+         />
+
+
+</RelativeLayout>

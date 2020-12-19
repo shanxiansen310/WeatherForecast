@@ -11,7 +11,7 @@
         android:name="com.example.weatherforecast.WeatherTitleFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1.3" />
 
     <!--能找到这个FrameLayout的id则是双页平板布局-->
     <FrameLayout

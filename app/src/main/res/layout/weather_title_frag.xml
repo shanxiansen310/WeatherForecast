@@ -1,8 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weather_title_frag_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/weather_title_frag_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/skyBlue"
+        >
+
+        <TextView
+            android:id="@+id/weather_title_frag_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="25sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Today,Dec 19"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/weather_title_frag_tempMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weather_title_frag_today"
+            android:layout_marginLeft="45dp"
+            android:text="26°"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            />
+        <TextView
+            android:id="@+id/weather_title_frag_tempMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/weather_title_frag_tempMax"
+            android:layout_marginLeft="45dp"
+            android:layout_marginBottom="10dp"
+            android:text="6°"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            />
+
+        <ImageView
+            android:id="@+id/weather_title_frag_image"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/cloudy"
+            android:layout_alignParentRight="true"
+            />
+
+        <TextView
+            android:id="@+id/weather_title_frag_situation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/weather_title_frag_image"
+            android:layout_alignRight="@id/weather_title_frag_image"
+            android:layout_marginRight="30dp"
+            android:text="晴"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            />
+
+
+    </RelativeLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weather_title_recycler_view"

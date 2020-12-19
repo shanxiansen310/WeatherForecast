@@ -10,11 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.weatherforecast.database.Weather;
 import com.example.weatherforecast.util.FetchData;
-import com.qweather.plugin.view.QWeatherConfig;
 
 import java.util.List;
 
@@ -23,9 +24,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         setContentView(R.layout.activity_main);
 
-        new FetchItemsTask().execute();
+        /*只在单页模式下消除标题栏阴影*/
+        if (this.findViewById(R.id.weather_content_layout) == null) {
+            getSupportActionBar().setElevation(0.0f); // 找不到weather_content_layout布局时，为单页模式
+        }
+        /*隐藏标题栏*/
+//        ActionBar actionBar=getSupportActionBar();
+//        if (actionBar!=null){
+//            actionBar.hide();
+//        }
+
+//        ImageView imageView=(ImageView)findViewById(R.id.image);
 
 //        Button button =(Button) findViewById(R.id.button);
 //        button.setOnClickListener(this);
@@ -43,13 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
     }
 
-    /*AsyncTask虽然deprecated,但对于我这种初学者还是挺友好...*/
-    private class FetchItemsTask extends AsyncTask<Void,Void, List<Weather>>{
-        @Override
-        protected List<Weather> doInBackground(Void... voids) {
-            return new FetchData().fetchItems();
-        }
-    }
+
 
 
     private void replaceFragment(Fragment fragment){

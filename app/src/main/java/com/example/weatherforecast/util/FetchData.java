@@ -104,7 +104,7 @@ public class FetchData {
     }
 
     public static void main(String[] args) {
-        new FetchData().fetchItems();
+//        new FetchData().fetchItems();
     }
 
 

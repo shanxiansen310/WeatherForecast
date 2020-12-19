@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.weatherforecast.database.Weather;
+
 public class WeatherContentActivity extends AppCompatActivity {
 
     @Override
@@ -22,15 +24,25 @@ public class WeatherContentActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        /*得到标题和内容信息,并通过FragmentManager得到news_content_fragment对内容进行更新*/
-        String newsTitle = getIntent().getStringExtra("news_title"); // 获取传入的新闻标题
-        String newsContent = getIntent().getStringExtra("news_content"); // 获取传入的新闻内容
+        /*获取启动该activity时传来的Weather对象*/
+        Weather weather=(Weather) getIntent().getSerializableExtra("weather");
         WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
                 getSupportFragmentManager().findFragmentById(R.id.weather_content_fragment);
+
         assert weatherContentFragment != null;
-        weatherContentFragment.refresh(newsTitle, newsContent); // 刷新NewsContentFragment界面
+        weatherContentFragment.refresh(weather);
+
+//        /*得到标题和内容信息,并通过FragmentManager得到news_content_fragment对内容进行更新*/
+//        String newsTitle = getIntent().getStringExtra("news_title"); // 获取传入的新闻标题
+//        String newsContent = getIntent().getStringExtra("news_content"); // 获取传入的新闻内容
+//        WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.weather_content_fragment);
+//        assert weatherContentFragment != null;
+//
+//        weatherContentFragment.refresh(newsTitle, newsContent); // 刷新NewsContentFragment界面
     }
 
+    /*返回上一个activity的按钮*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -42,10 +54,11 @@ public class WeatherContentActivity extends AppCompatActivity {
     }
 
     /*这里是方便于MainActivity启动该应用编写的方法,使得启动该activity所需要的参数体现出来*/
-    public static void actionStart(Context context, String newsTitle, String newsContent) {
+    public static void actionStart(Context context, Weather weather) {
         Intent intent = new Intent(context, WeatherContentActivity.class);
-        intent.putExtra("news_title", newsTitle);
-        intent.putExtra("news_content", newsContent);
+        intent.putExtra("weather",weather);
+//        intent.putExtra("news_title", newsTitle);
+//        intent.putExtra("news_content", newsContent);
         context.startActivity(intent);
     }
 }

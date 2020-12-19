@@ -2,18 +2,24 @@ package com.example.weatherforecast.database;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Weather {
+public class Weather implements Serializable {
     @SerializedName("fxDate")
     private String date;
     private String tempMax;
     private String tempMin;
+    private String textDay;     /*表示当天的天气状况,如晴,小雨,下雪等*/
     private String humidity;
     private String pressure;
     @SerializedName("windSpeedDay")
     private String windSpeed;
+    @SerializedName("windDirDay")
+    private String windDirection;
     private String iconDay;
+    private int position;
+
 
     public String getDate() {
         return date;
@@ -37,6 +43,14 @@ public class Weather {
 
     public void setTempMin(String tempMin) {
         this.tempMin = tempMin;
+    }
+
+    public String getTextDay() {
+        return textDay;
+    }
+
+    public void setTextDay(String textDay) {
+        this.textDay = textDay;
     }
 
     public String getHumidity() {
@@ -63,12 +77,28 @@ public class Weather {
         this.windSpeed = windSpeed;
     }
 
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public void setWindDirection(String windDirection) {
+        this.windDirection = windDirection;
+    }
+
     public String getIconDay() {
         return iconDay;
     }
 
     public void setIconDay(String iconDay) {
         this.iconDay = iconDay;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
 

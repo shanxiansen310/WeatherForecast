@@ -1,42 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    >
 
-    <LinearLayout
-        android:id="@+id/visibility_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="invisible" >
 
         <TextView
-            android:id="@+id/news_title"
+            android:id="@+id/weather_content_frag_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="40sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Today"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/weather_content_frag_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weather_content_frag_today"
+            android:layout_alignLeft="@+id/weather_content_frag_today"
+            android:text="Dec 19"
+            android:layout_marginTop="-15dp"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="#BDCAD1"
+            />
+
+        <TextView
+            android:id="@+id/weather_content_frag_tempMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weather_content_frag_date"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="20dp"
+            android:text="26°"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            />
+        <TextView
+            android:id="@+id/weather_content_frag_tempMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/weather_content_frag_tempMax"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="15dp"
+            android:text="6°"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            />
+
+        <ImageView
+            android:id="@+id/weather_content_frag_image"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_toRightOf="@+id/weather_content_frag_tempMax"
+            android:layout_alignTop="@+id/weather_content_frag_tempMax"
+            android:src="@drawable/cloudy"
+            />
+
+        <TextView
+            android:id="@+id/weather_content_frag_situation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/weather_content_frag_image"
+            android:layout_alignRight="@id/weather_content_frag_image"
+            android:layout_marginRight="30dp"
+            android:text="晴"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textSize="20sp" />
+            android:layout_below="@+id/weather_content_frag_tempMin"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            >
+                <TextView
+                    android:id="@+id/weather_content_frag_humidity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Humidity: 78%"
+                    android:textColor="#D4E3EA"
+                    android:textSize="30sp"
+                    />
+                <TextView
+                    android:id="@+id/weather_content_frag_pressure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Pressure:1018 hPa"
+                    android:textColor="#D4E3EA"
+                    android:textSize="30sp"
+                    />
+                <TextView
+                    android:id="@+id/weather_content_frag_wind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Wind: 3km/h SE"
+                    android:textColor="#D4E3EA"
+                    android:textSize="30sp"
+                    />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000" />
 
-        <TextView
-            android:id="@+id/news_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:textSize="18sp" />
+        </LinearLayout>
 
-    </LinearLayout>
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:background="#000" />
+
+<!--    <View-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:background="#000" />-->
 
 </RelativeLayout>

@@ -3,7 +3,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/weather_title_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    >
+    <include layout="@layout/title"/>
 
     <!--传入天气列表的fragment-->
     <fragment
