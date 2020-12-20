@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--这里是手机模式下展现天气列表activity的布局-->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/weather_title_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
-    <include layout="@layout/title"/>
+<!--    <include layout="@layout/title"/>-->
 
     <!--传入天气列表的fragment-->
     <fragment
@@ -15,4 +16,4 @@
         android:layout_height="match_parent"
         />
 
-</FrameLayout>
+</LinearLayout>
