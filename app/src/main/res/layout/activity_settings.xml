@@ -45,24 +45,29 @@
             android:text="Centigrade"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/Setting_Notifications"
+    <RelativeLayout
+        android:id="@+id/setting_notifications"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_marginLeft="16dp"
-        android:gravity="center">
+        android:layout_marginTop="20dp"
+        >
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weather Notifications"
             android:textSize="24dp"
             android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/Setting_Notifications_able"
-            android:layout_width="match_parent"
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/switchButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="disabled"/>
-    </LinearLayout>
+            android:padding="5dp"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

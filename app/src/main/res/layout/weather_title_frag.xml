@@ -51,9 +51,9 @@
 
         <ImageView
             android:id="@+id/weather_title_frag_image"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginRight="50dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_alignRight="@+id/weather_title_frag_today"
             android:layout_marginTop="5dp"
             android:src="@drawable/cloudy"
             android:layout_alignParentRight="true"
@@ -66,7 +66,7 @@
             android:padding="5dp"
             android:layout_below="@+id/weather_title_frag_image"
             android:layout_alignRight="@id/weather_title_frag_image"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="50dp"
             android:text="晴"
             android:textColor="@color/white"
             android:textSize="25sp"

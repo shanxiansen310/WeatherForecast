@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="  Location"
+        android:textSize="26dp"
+        android:background="@color/lightGrey"
+        android:textColor="@color/white"        />
+    <EditText
+        android:id="@+id/edit_cityName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="city name"
+        android:focusable="true"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/grey"/>
+    <Button
+        android:id="@+id/yes_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@color/skyBlue"
+        android:text="YES"
+        android:textSize="22dp"
+        android:textColor="@color/realBlack"/>
+
+</LinearLayout>

@@ -15,6 +15,12 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!--新建自己的Dialog风格-->
+    <style name="dialogstyle" parent="Theme.AppCompat.Dialog">
+        <!--设置无标题-->
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="titlebarstyle" parent="android:Theme">
 
         <item name="android:windowTitleSize">35dp</item>

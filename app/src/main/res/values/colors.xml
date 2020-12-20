@@ -11,8 +11,10 @@
     <color name="lightBlue">#FF21B5C8</color>
     <color name="skyBlue">#FF2DABE4</color>
     <color name="grey">#81878A</color>
+    <color name="lightGrey">#C4C8CA</color>
     <color name="white">#F8FAFB</color>
     <color name="blue1">#71B7DA</color>
+
 
 
 </resources>

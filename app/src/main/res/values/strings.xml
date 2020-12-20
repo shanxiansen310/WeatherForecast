@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
+    <string name="tempDisplay">WeatherForecast</string>
 </resources>

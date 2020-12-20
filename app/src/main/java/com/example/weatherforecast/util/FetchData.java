@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.weatherforecast.database.Weather;
+import com.example.weatherforecast.gson.DistrictBean;
 import com.example.weatherforecast.gson.WeatherBean;
 import com.google.gson.Gson;
 
@@ -57,30 +58,24 @@ public class FetchData {
         return new String(getUrlBytes(urlSpec));
     }
 
-    /*构建完整的Flickr api请求url*/  //加入的count是为了分页
-    public List<Weather> fetchItems()  {
+    /*构建完整的天气 api请求url*/  //加入的count是为了分页
+    public List<Weather> fetchItems(String cityName)  {
 //        Log.d(TAG,"fetchItems!!!");
 
+//        Log.d(TAG,"!!!"+getCityId("changsha"));
+        String cityId=getCityId(cityName);
         List<Weather> items =new ArrayList<>();
 
         try {
-            /*flickr默认返回XML格式的数据,要获取有效的json数据,需要同时指定format和nojsoncallback */
             String url = Uri.parse("https://devapi.qweather.com/v7/weather/15d?")
                     .buildUpon()
                     .appendQueryParameter("key", API_KEY)    //--已在和风官网获取到key    暂未获取到API_KEY
-                    .appendQueryParameter("location","101250101")  //城市对应的weatherId
+                    .appendQueryParameter("location",cityId)  //城市对应的weatherId
                     .build().toString();
 
             String jsonString = getUrlString(url);
-            //请求一次只给你25张,我调了page参数仍然不行
-            String newJsonString=getUrlString(url);
+
             Log.i(TAG, "Received JSON: " + jsonString);
-            /*解析传入的FlickrJSON数据,会生成与原始JSON数据对应的对象树*/
-//            JSONObject jsonBody=new JSONObject(jsonString);
-            /*解析json数据,将其转化成对象*/
-//            parseItems(items,jsonBody);
-            /*采用GSON解析json数据*/
-//            parseItemsGson(items,jsonString);
 
             parseGSON(items,jsonString);
 
@@ -95,6 +90,29 @@ public class FetchData {
         return items;
     }
 
+    /*获取城市ID*/
+    public String getCityId(String city){
+        String cityId=null;
+        try {
+            String url = Uri.parse("https://geoapi.qweather.com/v2/city/lookup?")
+                    .buildUpon()
+                    .appendQueryParameter("key", API_KEY)
+                    .appendQueryParameter("location", city)
+                    .build().toString();
+            String jsonString = getUrlString(url);
+            Log.i(TAG, "Received JSON: " + jsonString);
+
+            Gson gson=new Gson();
+            DistrictBean bean=gson.fromJson(jsonString,DistrictBean.class);
+            cityId=bean.getDistrictList().get(0).getId();
+
+        }catch (IOException ioe){
+            Log.e(TAG,"Failed to fetch Items",ioe);
+        }
+
+        return cityId;
+    }
+
     private void parseGSON(List <Weather> items,String jsonData){
         Gson gson=new Gson();
         WeatherBean bean=gson.fromJson(jsonData,WeatherBean.class);
@@ -103,8 +121,9 @@ public class FetchData {
         items.addAll(weatherList);
     }
 
+
+
     public static void main(String[] args) {
-//        new FetchData().fetchItems();
     }
 
 

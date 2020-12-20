@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 /* 展示天气列表 */
 public class WeatherTitleFragment extends Fragment {
@@ -51,13 +51,21 @@ public class WeatherTitleFragment extends Fragment {
     private View lastView;
     private Boolean isInitial=true;
 
+    /*需要获取天气的城市名*/
+    private String mCityName ="changsha";     //初始设置为changsha
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);           //决定activity销毁后是否保留fragment
 
-        new FetchItemsTask().execute();    //执行该方法会读取后台从api获得的天气信息
 
+        /*如果是通过intent启动的,我们就要对显示天气的城市进行修改!!!*/
+        if (Objects.requireNonNull(getActivity()).getIntent()!=null&&getActivity().getIntent().getStringExtra("cityName")!=null){
+            mCityName=getActivity().getIntent().getStringExtra("cityName");
+        }
+
+        new FetchItemsTask().execute();    //执行该方法会读取后台从api获得的天气信息
         Log.d(TAG, "onCreate() is called!!");
     }
 
@@ -290,7 +298,7 @@ public class WeatherTitleFragment extends Fragment {
             @Override
             protected List<Weather> doInBackground(Void... voids) {
                 Log.d(TAG, "doInBackGround() is called!!!");
-                return new FetchData().fetchItems();
+                return new FetchData().fetchItems(mCityName);
             }
 
 
