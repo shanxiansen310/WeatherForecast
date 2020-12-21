@@ -3,13 +3,21 @@ package com.example.weatherforecast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,9 +25,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.weatherforecast.database.Weather;
+import com.example.weatherforecast.util.ToActivityListener;
+import com.example.weatherforecast.util.ToFragmentListener;
+
+import org.litepal.tablemanager.Connector;
+
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ToActivityListener {
 
     private final String TAG="shanxiansen";
     private String mCityName ="changsha";     /*默认为长沙*/
@@ -29,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mTempUnit="Centigrade";
 
     private static final int REQUEST_CODE_SETTINGS =0;
+
+    private WeatherTitleFragment mWeatherTitleFragment;
+    private ToFragmentListener mToFragmentListener;
+
+    private Weather mWeatherToday;
 
 
     @Override
@@ -42,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (this.findViewById(R.id.weather_content_layout) == null) {
             getSupportActionBar().setElevation(0.0f); // 找不到weather_content_layout布局时，为单页模式
         }
+
+        /*创建数据库*/
+        Connector.getDatabase();
+//        Weather weather=new Weather();
+//        weather.save();
 
 //        /*从设置中启动时更新城市名*/
 //        if (getIntent()!=null&&getIntent().getStringExtra("cityName")!=null){
@@ -63,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+//
+//    public static Intent newIntent(Context context){
+//        return new Intent(context,MainActivity.class);
+//    }
 
     /**
      * 创建菜单
@@ -170,6 +198,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         Log.d(TAG,this.toString()+": onResume!");
+        if (mNeedNotification)
+            sendNotification();
     }
 
     @Override
@@ -187,6 +217,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG,"onActivityResult: data is null!!!");
                 return;
             }
+
+            //TODO 摄氏度和华氏度切换
+            if (! mTempUnit.equals(data.getStringExtra("tempUnit"))){
+                FragmentManager fm=getSupportFragmentManager();
+                mWeatherTitleFragment=(WeatherTitleFragment)fm.findFragmentById(R.id.weather_title_fragment);
+
+                mToFragmentListener=mWeatherTitleFragment;
+                boolean isCentigrade;
+                /*旧的是摄氏度,则新的是华氏度*/
+                isCentigrade = !mTempUnit.equals("Centigrade");
+                /*更新*/
+
+                mToFragmentListener.modifyTempFormat(isCentigrade);
+            }
             mCityName=data.getStringExtra("cityName");
             mTempUnit=data.getStringExtra("tempUnit");
             mNeedNotification=data.getBooleanExtra("needNotification",false);
@@ -195,6 +239,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG,"成功获取返回数据!!!"+mTempUnit+" $$$"+isEqual+"##"+getIntent().getStringExtra("cityName"));
 
         }
+    }
+
+    public void sendNotification(){
+        Log.d(TAG,"sendNotification!!!");
+
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.baidu.com"));
+        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,0,intent,0);
+
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        if(Build.VERSION.SDK_INT >= 26)
+        {
+            //当sdk版本大于26
+            String id = "channel_1";
+            String description = "143";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(id, description, importance);
+//                     channel.enableLights(true);
+//                     channel.enableVibration(true);//
+            manager.createNotificationChannel(channel);
+            Notification notification = new Notification.Builder(MainActivity.this, id)
+                    .setCategory(Notification.CATEGORY_MESSAGE)
+                    .setContentTitle("Forecast: "+mCityName)
+                    .setContentText(mWeatherToday.getTextDay()+"  high:"+mWeatherToday.getTempMax()+"°  low:"+mWeatherToday.getTempMin()+"°")
+                    .setTicker("Weather Notification")
+                    .setSmallIcon(R.drawable.cloudy)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .build();
+            manager.notify(1, notification);
+        }
+        else
+        {
+            //当sdk版本小于26
+            Notification notification = new NotificationCompat.Builder(MainActivity.this)
+                    .setContentTitle("This is content title")
+                    .setContentText("This is content text")
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .build();
+            manager.notify(1,notification);
+        }
+
+//        Intent intent=new Intent(MainActivity.this,MainActivity.class);
+//        PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,0);
+//
+//        //设置图片,通知标题,发送时间,提示方式等属性
+//        Notification.Builder mBuilder = new Notification.Builder(this);
+//        mBuilder.setContentTitle("叶良辰")                        //标题
+//                .setContentText("我有一百种方法让你呆不下去~")      //内容
+//                .setSubText("——记住我叫叶良辰")                    //内容下面的一小段文字
+//                .setTicker("收到叶良辰发送过来的信息~")             //收到信息后状态栏显示的文字信息
+//                .setWhen(System.currentTimeMillis())           //设置通知时间
+//                .setSmallIcon(R.drawable.cloudy)            //设置小图标
+//                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
+//                .setAutoCancel(true)                           //设置点击后取消Notification
+//                .setContentIntent(pendingIntent);                        //设置PendingIntent
+//        Notification notify1 = mBuilder.build();
+//        NotificationManager manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            NotificationChannel mChannel = new NotificationChannel(getString(R.string.app_name), getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW);
+//            mChannel.setDescription("notication channel");
+//            mChannel.setShowBadge(false);
+//            manager.createNotificationChannel(mChannel);
+//        }
+//        manager.notify(0, notify1);
+    }
+
+
+    /*接口回调,用于Fragment向Activity传递信息*/
+    /*MainActivity中进行该方法的设计,Fragment中对该接口进行传值并调用,该方法根据传值进行相应的操作*/
+    @Override
+    public void getTodayWeather(Weather weather) {
+        mWeatherToday=weather;
     }
 
     private void replaceFragment(Fragment fragment){

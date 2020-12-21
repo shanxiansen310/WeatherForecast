@@ -1,6 +1,7 @@
 package com.example.weatherforecast;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment;
 import com.example.weatherforecast.database.Weather;
 import com.example.weatherforecast.util.CalendarUtil;
 import com.example.weatherforecast.util.FetchData;
+import com.example.weatherforecast.util.FormatUtil;
+import com.example.weatherforecast.util.ToFragmentListener;
 
-public class WeatherContentFragment extends Fragment {
+public class WeatherContentFragment extends Fragment implements ToFragmentListener {
     private View view;
     private TextView mTextViewToday;
     private TextView mTextViewDate;
@@ -65,5 +68,22 @@ public class WeatherContentFragment extends Fragment {
 //        newsTitleText.setText(weather.getDate()); // 刷新新闻的标题
 //        newsContentText.setText(newsContent); // 刷新新闻的内容
 
+    }
+
+
+
+    @Override
+    public void modifyTempFormat(boolean isCentigrade) {
+
+        Log.d("shanxiansen","modify in content ");
+        FormatUtil util=new FormatUtil();
+        if (isCentigrade) {
+            mTextViewTempMax.setText(util.getCentigrade(mTextViewTempMax.getText().toString())+"°");
+            mTextViewTempMin.setText(util.getCentigrade(mTextViewTempMin.getText().toString())+"°");
+        }
+        else {
+            mTextViewTempMax.setText(util.getFahrenheit(mTextViewTempMax.getText().toString())+"°");
+            mTextViewTempMin.setText(util.getFahrenheit(mTextViewTempMin.getText().toString())+"°");
+        }
     }
 }

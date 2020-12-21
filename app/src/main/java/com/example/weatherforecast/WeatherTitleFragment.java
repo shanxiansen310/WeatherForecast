@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherforecast.database.Weather;
 import com.example.weatherforecast.util.CalendarUtil;
 import com.example.weatherforecast.util.FetchData;
+import com.example.weatherforecast.util.FormatUtil;
+import com.example.weatherforecast.util.ToActivityListener;
+import com.example.weatherforecast.util.ToFragmentListener;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 
 /* 展示天气列表 */
-public class WeatherTitleFragment extends Fragment {
+public class WeatherTitleFragment extends Fragment implements ToFragmentListener {
 
     private final String TAG = "WeatherTitleFragment";
     private boolean isTwoPane;
@@ -54,6 +60,9 @@ public class WeatherTitleFragment extends Fragment {
     /*需要获取天气的城市名*/
     private String mCityName ="changsha";     //初始设置为changsha
 
+    /*回调接口,向activity传递数据*/
+    private ToActivityListener mToActivityListener;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +81,7 @@ public class WeatherTitleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        /*Instantiates a layout XML file into its corresponding View objects. */
         View view = inflater.inflate(R.layout.weather_title_frag, container, false);
 
         mLinearLayoutView = view.findViewById(R.id.weather_title_frag_linear_layout);
@@ -88,6 +98,14 @@ public class WeatherTitleFragment extends Fragment {
         /*配置布局管理器*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mWeatherTitleRecyclerView.setLayoutManager(layoutManager);
+
+        /*从数据库初始化数据*/
+        mItems= DataSupport.findAll(Weather.class);
+        updateToday(mItems.get(0));
+
+        /*传递今日的天气信息给activity,方便其发送通知*/
+        mToActivityListener.getTodayWeather(mItems.get(0));
+
         /*配置适配器adapter*/
         setupAdapter();
 
@@ -147,6 +165,7 @@ public class WeatherTitleFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mToActivityListener=(MainActivity)getActivity();     /*得到托管的activity*/
         Log.d(TAG, "onAttach() is called!!");
     }
 
@@ -212,9 +231,11 @@ public class WeatherTitleFragment extends Fragment {
 
                         weatherContentFragment.refresh(weather);
 
-                        lastView.setBackgroundColor(getResources().getColor(R.color.white));
-                        lastView=view;
-
+                        /*防止重复点击时始终为白色*/
+                        if (lastView!=view) {
+                            lastView.setBackgroundColor(getResources().getColor(R.color.white));
+                            lastView = view;
+                        }
                     } else {
                         /*单页手机模式则直接启动WeatherContentActivity*/
                         /*注意一下这里不能直接设置WeatherContentFragment,因为Fragment
@@ -238,10 +259,18 @@ public class WeatherTitleFragment extends Fragment {
             holder.mSituationTextView.setText(weather.getTextDay());
             holder.mTempMaxTextView.setText(weather.getTempMax() + "°");
             holder.mTempMinTextView.setText(weather.getTempMin() + "°");
+
+            /*强制让每一次setAdapter时都显示today,这样好处是改变摄氏度和华氏度时不会出现在
+            * 平板模式下RecyclerView更新了格式而右边的content fragment中没有更新格式*/
             if (position == 0&&isInitial&&isTwoPane) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.blue1));
                 lastView=holder.itemView;
-                isInitial=false;
+                WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
+                        getFragmentManager().findFragmentById(R.id.weather_content_fragment);
+
+                weatherContentFragment.refresh(weather);
+
+//                isInitial=false;
             }
 //            Log.d(TAG,weather.getTextDay());
 //            }
@@ -310,6 +339,8 @@ public class WeatherTitleFragment extends Fragment {
                 setupAdapter();
                 /*更新Today*/
                 updateToday(weathers.get(0));
+                mToActivityListener.getTodayWeather(weathers.get(0));
+
 
                 /*平板模式下,启动默认(today)视图的更新*/
                 if (isTwoPane) {
@@ -398,13 +429,40 @@ public class WeatherTitleFragment extends Fragment {
             mTextViewTodayTempMin.setText(weather.getTempMin() + "°");
             mTextViewTodayImage.setImageResource(getWeatherImage(weather.getIconDay()));
             mTextViewTodaySituation.setText(weather.getTextDay());
+        }
 
+        /*修改温度格式*/
+        /*华氏度 = 32°F+ 摄氏度 × 1.8
+          摄氏度 = (华氏度 - 32°F) ÷ 1.8*/
+        @Override
+        public void modifyTempFormat(boolean isCentigrade) {
+            Log.d(TAG,"modifyFormat!!!");
+            FormatUtil util=new FormatUtil();
+            if (isCentigrade) {
+                mTextViewTodayTempMax.setText(util.getCentigrade((String) mTextViewTodayTempMax.getText())+"°");
+                mTextViewTodayTempMin.setText(util.getCentigrade((String) mTextViewTodayTempMin.getText())+"°");
+                for (Weather weather : mItems) {
+                    weather.setTempMax(util.getCentigrade(weather.getTempMax()));
+                    weather.setTempMin(util.getCentigrade(weather.getTempMin()));
+                }
+            }else {
+                mTextViewTodayTempMax.setText(util.getFahrenheit((String) mTextViewTodayTempMax.getText())+"°");
+                mTextViewTodayTempMin.setText(util.getFahrenheit((String) mTextViewTodayTempMin.getText())+"°");
+                for (Weather weather : mItems) {
+//                    Log.d(TAG,weather.getTempMax());
+//                    Log.d(TAG,util.getFahrenheit(weather.getTempMax()));
+//                    Log.d(TAG,weather.getTempMin());
+                    weather.setTempMax(util.getFahrenheit(weather.getTempMax()));
+                    weather.setTempMin(util.getFahrenheit(weather.getTempMin()));
+                }
+            }
+            setupAdapter();
         }
 
         public static void main(String[] args) {
-////        System.out.println(getWeek("2020-12-25"));
-//        String str="2012-12-13";
-//        System.out.println(str.substring(3));
+    ////        System.out.println(getWeek("2020-12-25"));
+    //        String str="2012-12-13";
+    //        System.out.println(str.substring(3));
         }
 
-    }
+}

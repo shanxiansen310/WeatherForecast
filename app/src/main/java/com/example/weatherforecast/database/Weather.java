@@ -2,10 +2,12 @@ package com.example.weatherforecast.database;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Weather implements Serializable {
+public class Weather extends DataSupport implements Serializable {
     @SerializedName("fxDate")
     private String date;
     private String tempMax;

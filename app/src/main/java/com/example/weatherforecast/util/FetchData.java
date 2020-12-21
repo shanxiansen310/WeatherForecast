@@ -8,6 +8,8 @@ import com.example.weatherforecast.gson.DistrictBean;
 import com.example.weatherforecast.gson.WeatherBean;
 import com.google.gson.Gson;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,7 +88,30 @@ public class FetchData {
 
         }catch (IOException ioe){
             Log.e(TAG,"Failed to fetch Items",ioe);
+
+            /*获取不到的话,就从数据库中获取*/
+            items=DataSupport.findAll(Weather.class);
+            return items;
+
         }
+
+
+        /*删除整张表*/
+//        DataSupport.deleteAll(Weather.class);
+
+        List<Weather> queryWeather;
+        /*将获取到的数据添加到数据库中*/
+        for(Weather weather:items){
+            queryWeather=DataSupport.where("date=?",weather.getDate()).find(Weather.class);
+
+            if (queryWeather.size()==0){
+                weather.save();
+            }
+
+        }
+
+
+
         return items;
     }
 

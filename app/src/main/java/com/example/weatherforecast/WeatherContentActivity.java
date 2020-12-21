@@ -103,7 +103,7 @@ public class WeatherContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+//        getMenuInflater().inflate(R.menu.menu_main,menu);
         //使用菜单填充器获取menu下的菜单资源文件
         getMenuInflater().inflate(R.menu.menu_share,menu);
         //获取分享的菜单子组件
@@ -114,6 +114,7 @@ public class WeatherContentActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
     //设置可以调用手机内所有可以分享图片的应用
     private Intent getDefaultIntent() {
         Intent intent = new Intent();

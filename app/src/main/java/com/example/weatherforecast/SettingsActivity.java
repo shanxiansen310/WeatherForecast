@@ -2,8 +2,12 @@ package com.example.weatherforecast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -27,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private String mCityName ="changsha";         /*默认为长沙*/
     private String  mTempUnit="Centigrade";       /*存储设置中的配置*/
-    private boolean mNeedNotification=false;
+    private boolean mNeedNotification;
 
 
     @Override
@@ -58,6 +62,8 @@ public class SettingsActivity extends AppCompatActivity {
                 t.show();
                 mNeedNotification=isChecked;
                 respond();
+
+
             }
         });
 
