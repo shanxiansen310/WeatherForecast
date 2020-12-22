@@ -1,3 +1,2 @@
-include ':QWeather_Plugin_SDK_Android_V1.5'
 include ':app'
 rootProject.name = "WeatherForecast"
