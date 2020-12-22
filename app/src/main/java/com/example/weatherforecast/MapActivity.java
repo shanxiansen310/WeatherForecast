@@ -26,17 +26,12 @@ import com.baidu.mapapi.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /*简单的查询当前位置的经纬度，但只能在真机上查询得到*/
 public class MapActivity extends AppCompatActivity {
     public LocationClient mLocationClient;
-
     private TextView positionText;
-
     private MapView mapView;
-
     private BaiduMap baiduMap;
-
     private boolean isFirstLocate = true;
 
     @Override

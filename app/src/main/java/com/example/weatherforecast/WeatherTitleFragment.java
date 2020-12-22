@@ -56,6 +56,7 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
     /*平板下获取上一个点击的item,便于修改颜色*/
     private View lastView;
     private Boolean isInitial=true;
+    private List<View> mWeatherViewList;
 
     /*需要获取天气的城市名*/
     private String mCityName ="changsha";     //初始设置为changsha
@@ -101,10 +102,13 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
 
         /*从数据库初始化数据*/
         mItems= DataSupport.findAll(Weather.class);
-        updateToday(mItems.get(0));
+        if (mItems.size()!=0) {
+            updateToday(mItems.get(0));
+            /*传递今日的天气信息给activity,方便其发送通知*/
+            mToActivityListener.getTodayWeather(mItems.get(0));
+        }
 
-        /*传递今日的天气信息给activity,方便其发送通知*/
-        mToActivityListener.getTodayWeather(mItems.get(0));
+
 
         /*配置适配器adapter*/
         setupAdapter();
@@ -215,12 +219,14 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                     .inflate(R.layout.list_item_weather, parent, false);
             final ViewHolder holder = new ViewHolder(view);
 
+
             /*对每一个显示的view设置点击监听事件*/
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*获取指定的天气*/
                     Weather weather = mWeatherList.get(holder.getAdapterPosition());
-                    Log.d(TAG, "onClick weather" + weather.getDate());
+                    Log.d(TAG, "onClick weather"+weather.getPosition() + weather.getDate());
 
                     if (isTwoPane) {
                         /*双页平板模式，则刷新WeatherContentFragment中的内容*/
@@ -236,6 +242,7 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                             lastView.setBackgroundColor(getResources().getColor(R.color.white));
                             lastView = view;
                         }
+
                     } else {
                         /*单页手机模式则直接启动WeatherContentActivity*/
                         /*注意一下这里不能直接设置WeatherContentFragment,因为Fragment
@@ -268,7 +275,7 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                 WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
                         getFragmentManager().findFragmentById(R.id.weather_content_fragment);
 
-                weatherContentFragment.refresh(weather);
+                weatherContentFragment.refresh(mWeatherList.get(0));
 
 //                isInitial=false;
             }
@@ -330,7 +337,6 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                 return new FetchData().fetchItems(mCityName);
             }
 
-
             /*在doInBackground之后执行,并且还是在主线程Resume后执行,所以安全可以更新UI*/
             @Override
             protected void onPostExecute(List<Weather> weathers) {
@@ -340,8 +346,6 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                 /*更新Today*/
                 updateToday(weathers.get(0));
                 mToActivityListener.getTodayWeather(weathers.get(0));
-
-
                 /*平板模式下,启动默认(today)视图的更新*/
                 if (isTwoPane) {
                     WeatherContentFragment weatherContentFragment = (WeatherContentFragment)
@@ -350,8 +354,6 @@ public class WeatherTitleFragment extends Fragment implements ToFragmentListener
                     weatherContentFragment.refresh(weathers.get(0));
 
                 }
-
-
                 Log.d(TAG, "onPostExecute is called!!!");
             }
         }

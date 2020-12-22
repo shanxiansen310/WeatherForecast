@@ -5,5 +5,5 @@
         android:title="Map Location"/>
     <item
         android:id="@+id/setting"
-        android:title="Setting"/>
+        android:title="Settings"/>
 </menu>

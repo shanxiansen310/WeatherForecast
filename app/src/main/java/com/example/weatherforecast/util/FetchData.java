@@ -24,7 +24,7 @@ public class FetchData {
 
     private static final String TAG="FetchData";
     //TODO 填上你自己申请的api_key
-    private static final String API_KEY="";
+    private static final String API_KEY="13d6358408ee4688ba0c5b8a82e677e7";
     /*从指定URL获取原始数据并返回一个字节流数组*/
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);

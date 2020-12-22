@@ -22,7 +22,6 @@ import com.example.weatherforecast.database.Weather;
 import java.util.List;
 
 public class WeatherContentActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +33,6 @@ public class WeatherContentActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         /*获取启动该activity时传来的Weather对象*/
         Weather weather=(Weather) getIntent().getSerializableExtra("weather");
         WeatherContentFragment weatherContentFragment = (WeatherContentFragment)

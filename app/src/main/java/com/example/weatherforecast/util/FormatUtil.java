@@ -24,5 +24,4 @@ public class FormatUtil {
         return temp+"";
     }
 
-
 }
